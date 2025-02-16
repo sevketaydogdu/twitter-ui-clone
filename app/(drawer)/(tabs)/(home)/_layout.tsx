@@ -3,8 +3,6 @@ import { withLayoutContext } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
 
-import { TabBarIcon } from '~/components/TabBarIcon';
-
 const { Navigator } = createMaterialTopTabNavigator();
 
 export const MaterialTopTabs = withLayoutContext(Navigator);
