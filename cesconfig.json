@@ -1,0 +1,35 @@
+{
+  "cesVersion": "2.12.2",
+  "projectName": "twitter-ui-clone",
+  "packages": [
+    {
+      "name": "expo-router",
+      "type": "navigation",
+      "options": {
+        "type": "drawer + tabs"
+      }
+    },
+    {
+      "name": "nativewind",
+      "type": "styling"
+    }
+  ],
+  "flags": {
+    "noGit": false,
+    "noInstall": false,
+    "overwrite": false,
+    "importAlias": true,
+    "packageManager": "yarn",
+    "eas": true
+  },
+  "packageManager": {
+    "type": "yarn",
+    "version": "1.22.19"
+  },
+  "os": {
+    "type": "Darwin",
+    "platform": "darwin",
+    "arch": "arm64",
+    "kernelVersion": "24.2.0"
+  }
+}
