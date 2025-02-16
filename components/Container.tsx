@@ -1,9 +1,21 @@
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
-export const Container = ({ children }: { children: React.ReactNode }) => {
-  return <SafeAreaView className={styles.container}>{children}</SafeAreaView>;
+interface ContainerProps {
+  children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
+  className?: string | undefined;
+}
+
+export const Container = ({ children, className, style }: ContainerProps) => {
+  return (
+    <SafeAreaView className={className} style={[styles.container, style]}>
+      {children}
+    </SafeAreaView>
+  );
 };
 
-const styles = {
-  container: 'flex flex-1 m-6',
-};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
