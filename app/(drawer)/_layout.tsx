@@ -1,13 +1,9 @@
-import { Ionicons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
-
-import { HeaderButton } from '../../components/HeaderButton';
 
 import DrawerContent from '~/components/DrawerContent';
 
 const DrawerLayout = () => (
-  <Drawer drawerContent={(props) => <DrawerContent {...props} />}>
+  <Drawer initialRouteName="(tabs)" drawerContent={(props) => <DrawerContent {...props} />}>
     <Drawer.Screen
       name="(tabs)"
       options={{
