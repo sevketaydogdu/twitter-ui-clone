@@ -1,19 +1,12 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "moduleSuffixes": [".ios", ".android", ".native", ""],
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "*"
-      ]
+      "~/*": ["*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts",
-    "nativewind-env.d.ts"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "nativewind-env.d.ts"]
 }

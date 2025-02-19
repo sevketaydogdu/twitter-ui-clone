@@ -1,7 +1,7 @@
-import { DarkTheme, DefaultTheme, ThemeContext, ThemeProvider } from '@react-navigation/native';
 import '../global.css';
 
-import { Stack } from 'expo-router';
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { Slot } from 'expo-router';
 import { useColorScheme } from 'nativewind';
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -12,6 +12,14 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
+  return (
+    <Wrappers>
+      <Slot />
+    </Wrappers>
+  );
+}
+
+const Wrappers = ({ children }: { children: React.ReactNode }) => {
   const colorScheme = useColorScheme();
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -39,11 +47,8 @@ export default function RootLayout() {
                 },
               }
         }>
-        <Stack>
-          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ title: 'Modal', presentation: 'modal' }} />
-        </Stack>
+        {children}
       </ThemeProvider>
     </GestureHandlerRootView>
   );
-}
+};
