@@ -107,7 +107,9 @@ const Post: React.FC<PostProps> = ({ post, hasShownTopLine }) => {
                 </Link>
               </View>
             </View>
-            <Text className="mt-1 text-gray-900 dark:text-gray-100">{post.content}</Text>
+            <Text className="mt-1 select-text text-gray-900 dark:text-gray-100">
+              {post.content}
+            </Text>
             {post.image && (
               <Image source={{ uri: post.image }} className="mt-2 h-60 w-full rounded-xl" />
             )}
