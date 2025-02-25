@@ -1,5 +1,5 @@
 import { DrawerContentScrollView } from '@react-navigation/drawer';
-import { Href, Link, router, usePathname, useSegments } from 'expo-router';
+import { Href, Link, router, useSegments } from 'expo-router';
 import {
   Bookmark,
   LucideIcon,
@@ -16,8 +16,7 @@ import {
   SearchIcon,
   BellIcon,
   MailIcon,
-  UserIcon,
-  PlusCircle,
+  Plus,
   MoonIcon,
   SunIcon,
 } from 'lucide-react-native';
@@ -25,241 +24,190 @@ import { useColorScheme } from 'nativewind';
 import React, { ForwardedRef, forwardRef, useCallback, useState } from 'react';
 import { View, Text, Image, Pressable } from 'react-native';
 
-import { Container } from './Container';
-import PressableScale from './ui/PressableScale';
-import { interopIcon } from '../helpers/interopIcon';
+import { profilePhotoUri } from '~/src/constants/images';
+import { interopIcon } from '~/src/helpers/interopIcon';
+
 import { useBreakPoints } from '../hooks/useBreakPoints';
 import { isNative, isWeb } from '../platform/detection';
 
-import { profilePhotoUri } from '~/src/constants/images';
-const MobileDrawerMenuData = [
-  {
-    label: 'Profile',
-    Icon: User,
-    to: 'sevketaydogdu',
-  },
-  {
-    label: 'Premium',
-    Icon: BadgeCheckIcon,
-    to: '(tabs)/premium',
-  },
-  {
-    label: 'List',
-    Icon: Users,
-    to: '2sevketaydogdu',
-  },
-  {
-    label: 'Bookmarks',
-    Icon: Bookmark,
-    to: '/bookmarks',
-  },
-  {
-    label: 'Verified Orgs',
-    Icon: Zap,
-    to: '4sevketaydogdu',
-  },
-  {
-    label: 'Monetization',
-    Icon: Banknote,
-    to: '5sevketaydogdu',
-  },
-  {
-    label: 'Ads',
-    Icon: SquareArrowUpRightIcon,
-    to: '6sevketaydogdu',
-  },
-  {
-    label: 'Jobs',
-    Icon: BriefcaseBusiness,
-    to: '/jobs',
-  },
-  {
-    label: 'Settings and privacy',
-    Icon: Settings,
-    to: '8sevketaydogdu',
-  },
-  {
-    label: 'Log out',
-    Icon: LogOut,
-    to: '9sevketaydogdu',
-  },
+import { Container } from './Container';
+import PressableScale from './ui/PressableScale';
+interface DrawerItemProps {
+  label: string;
+  Icon: LucideIcon;
+  href?: Href;
+  colorScheme: 'light' | 'dark' | undefined;
+  isCompact: boolean;
+  isMobile: boolean;
+}
+const DrawerMenuData = [
+  { label: 'Home', Icon: HomeIcon, to: '/', platforms: ['web'] },
+  { label: 'Explore', Icon: SearchIcon, to: 'search', platforms: ['web'] },
+  { label: 'Messages', Icon: MailIcon, to: '(messages)/messages', platforms: ['web'] },
+  { label: 'Notifications', Icon: BellIcon, to: '/notifications', platforms: ['web'] },
+  { label: 'Profile', Icon: User, to: 'sevketaydogdu', platforms: ['mobile', 'web'] },
+  { label: 'Premium', Icon: BadgeCheckIcon, to: '(tabs)/premium', platforms: ['mobile', 'web'] },
+  { label: 'List', Icon: Users, to: '/lists/', platforms: ['mobile'] },
+  { label: 'Bookmarks', Icon: Bookmark, to: '/bookmarks', platforms: ['mobile', 'web'] },
+  { label: 'Verified Orgs', Icon: Zap, to: '/verifiedorgs', platforms: ['mobile', 'web'] },
+  { label: 'Monetization', Icon: Banknote, to: '/monetization', platforms: ['mobile'] },
+  { label: 'Ads', Icon: SquareArrowUpRightIcon, to: '/ads', platforms: ['mobile'] },
+  { label: 'Jobs', Icon: BriefcaseBusiness, to: '/jobs', platforms: ['mobile', 'web'] },
+  { label: 'Settings and privacy', Icon: Settings, to: '/settings', platforms: ['mobile'] },
+  { label: 'Lists', Icon: BellIcon, to: '/lists', platforms: ['web'] },
+  { label: 'Communities', Icon: Users, to: 'communities', platforms: ['web'] },
+  { label: 'Log out', Icon: LogOut, to: '/', platforms: ['mobile', 'web'] },
 ];
-const WebDrawerMenuData = [
-  {
-    label: 'Home',
-    Icon: HomeIcon,
-    to: '/',
-  },
-  {
-    label: 'Explore',
-    Icon: SearchIcon,
-    to: 'search',
-  },
-  {
-    label: 'Notifications',
-    Icon: BellIcon,
-    to: '/notifications',
-  },
-  {
-    label: 'Messages',
-    Icon: MailIcon,
-    to: '(messages)/messages',
-  },
-  {
-    label: 'Lists',
-    Icon: BellIcon,
-    to: '/lists',
-  },
-  {
-    label: 'Bookmarks',
-    Icon: Bookmark,
-    to: '/bookmarks',
-  },
-  {
-    label: 'Jobs',
-    Icon: BriefcaseBusiness,
-    to: '/jobs',
-  },
-  {
-    label: 'Communities',
-    Icon: Users,
-    to: '2sevketaydogdu',
-  },
-  {
-    label: 'Premium',
-    Icon: BadgeCheckIcon,
-    to: '(tabs)/premium',
-  },
-  {
-    label: 'Verified Orgs',
-    Icon: Zap,
-    to: '4sevketaydogdu',
-  },
-  {
-    label: 'Profile',
-    Icon: UserIcon,
-    to: '4sevketaydogdu',
-  },
-  {
-    label: 'Log out',
-    Icon: LogOut,
-    to: '9sevketaydogdu',
-  },
-];
-const DrawerContent = () =>
-  // props?: DrawerContentComponentProps
-  {
-    const { isMobile, isCompact } = useBreakPoints();
-    const { colorScheme, toggleColorScheme } = useColorScheme();
-    const handlePressProfile = useCallback(() => {
-      router.push('/sevketaydogdu');
-    }, []);
-    interopIcon(SunIcon);
-    interopIcon(MoonIcon);
-    return (
-      <DrawerContentScrollView>
-        <Container className={isWeb ? '' : 'm-2'}>
-          {isMobile && (
-            <View>
-              <PressableScale onPress={handlePressProfile}>
-                <Image source={{ uri: profilePhotoUri }} className="h-14 w-14 rounded-full" />
-              </PressableScale>
-              <Pressable onPress={handlePressProfile}>
-                <Text className="text-lg font-bold dark:color-white">Sevket Aydogdu</Text>
-                <Text className="-mt-1 text-sm color-gray-500 ">@sevketayogdu</Text>
-              </Pressable>
-              <View className="flex-row flex-wrap gap-6">
-                <Text className="mt-4  font-bold dark:color-white">
-                  275 <Text className="font-normal color-gray-500"> Following</Text>
-                </Text>
-                <Text className=" mt-4  font-bold dark:color-white">
-                  31 <Text className="font-normal color-gray-500"> Followers</Text>
-                </Text>
-              </View>
-              <Text className="font-bold dark:color-white">
-                1 <Text className="font-normal color-gray-500"> Subscription</Text>
-              </Text>
-            </View>
-          )}
 
-          <View className=" mt-4 gap-2">
-            {!isMobile
-              ? WebDrawerMenuData.map((item, index) => (
-                  <DrawerItem
-                    key={item.label}
-                    colorScheme={colorScheme}
-                    label={item.label}
-                    Icon={item.Icon}
-                    href={item.to as Href}
-                  />
-                ))
-              : MobileDrawerMenuData.map((item, index) => (
-                  <DrawerItem
-                    key={item.label}
-                    colorScheme={colorScheme}
-                    label={item.label}
-                    Icon={item.Icon}
-                    href={item.to as Href}
-                  />
-                ))}
-            {!isNative && (
-              <PressableScale className="select-none">
-                <View
-                  className={`items-center justify-center rounded-full bg-blue-500 ${isCompact ? 'p-2' : 'px-4 py-2'}  dark:bg-white `}>
-                  {isWeb && isCompact ? (
-                    <PlusCircle size={22} color="black" />
-                  ) : isMobile ? (
-                    <Text
-                      selectable={false}
-                      className="text-lg font-bold color-white dark:color-black">
-                      Post
-                    </Text>
-                  ) : (
-                    <Text className="text-lg font-bold color-white dark:color-black">Post</Text>
-                  )}
-                </View>
-              </PressableScale>
-            )}
-          </View>
-        </Container>
-        {colorScheme === 'dark' ? (
-          <SunIcon onPress={() => toggleColorScheme()} className="color-black" />
+const webOrder = [
+  'Home',
+  'Explore',
+  'Notifications',
+  'Messages',
+  'Lists',
+  'Bookmarks',
+  'Jobs',
+  'Communities',
+  'Premium',
+  'Verified Orgs',
+  'Profile',
+  'Log out',
+];
+
+const mobileOrder = [
+  'Profile',
+  'Premium',
+  'List',
+  'Bookmarks',
+  'Verified Orgs',
+  'Monetization',
+  'Ads',
+  'Jobs',
+  'Settings and privacy',
+  'Log out',
+];
+
+const DrawerContent = () => {
+  const { isMobile, isCompact } = useBreakPoints();
+  const { colorScheme, setColorScheme } = useColorScheme();
+  const segment = useSegments();
+  const handlePressProfile = useCallback(() => {
+    router.push('/sevketaydogdu');
+  }, []);
+
+  const handlePressToggleColorScheme = useCallback(() => {
+    setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
+  }, [colorScheme, setColorScheme]);
+
+  const orderedMenuData = DrawerMenuData.filter((item) =>
+    item.platforms.includes(isMobile ? 'mobile' : 'web')
+  ).sort((a, b) => {
+    const order = isMobile ? mobileOrder : webOrder;
+    return order.indexOf(a.label) - order.indexOf(b.label);
+  });
+
+  return (
+    <DrawerContentScrollView>
+      <Container className={isWeb ? '' : 'm-2'}>
+        {isMobile && <MobileProfileSection onPressProfile={handlePressProfile} />}
+        <MenuSection
+          menuData={orderedMenuData}
+          colorScheme={colorScheme}
+          isCompact={isCompact}
+          isMobile={isMobile}
+        />
+        {!isNative && <PostButton isCompact={isCompact} isMobile={isMobile} />}
+      </Container>
+      <ToggleColorSchemeButton colorScheme={colorScheme} onPress={handlePressToggleColorScheme} />
+    </DrawerContentScrollView>
+  );
+};
+
+const MobileProfileSection = ({ onPressProfile }: { onPressProfile: () => void }) => (
+  <View>
+    <PressableScale onPress={onPressProfile}>
+      <Image source={{ uri: profilePhotoUri }} className="h-14 w-14 rounded-full" />
+    </PressableScale>
+    <Pressable onPress={onPressProfile}>
+      <Text className="text-lg font-bold dark:color-white">Sevket Aydogdu</Text>
+      <Text className="-mt-1 text-sm color-gray-500 ">@sevketayogdu</Text>
+    </Pressable>
+    <View className="flex-row flex-wrap gap-6">
+      <Text className="mt-4 font-bold dark:color-white">
+        275 <Text className="font-normal color-gray-500"> Following</Text>
+      </Text>
+      <Text className="mt-4 font-bold dark:color-white">
+        31 <Text className="font-normal color-gray-500"> Followers</Text>
+      </Text>
+    </View>
+    <Text className="font-bold dark:color-white">
+      1 <Text className="font-normal color-gray-500"> Subscription</Text>
+    </Text>
+  </View>
+);
+
+const MenuSection = ({
+  menuData,
+  colorScheme,
+  isCompact,
+  isMobile,
+}: {
+  menuData: typeof DrawerMenuData;
+  colorScheme: 'light' | 'dark' | undefined;
+  isCompact: boolean;
+  isMobile: boolean;
+}) => (
+  <View className="mt-4 gap-2">
+    {menuData.map((item) => (
+      <DrawerItem
+        key={item.label}
+        colorScheme={colorScheme}
+        label={item.label}
+        Icon={item.Icon}
+        href={item.to as Href}
+        isCompact={isCompact}
+        isMobile={isMobile}
+      />
+    ))}
+  </View>
+);
+
+const PostButton = ({ isCompact, isMobile }: { isCompact: boolean; isMobile: boolean }) => {
+  interopIcon(Plus);
+  return (
+    <PressableScale className="select-none">
+      <View
+        className={`items-center justify-center rounded-full bg-blue-500 ${
+          isCompact ? 'p-2' : 'px-4 py-2'
+        } dark:bg-white`}>
+        {isWeb && isCompact ? (
+          <Plus size={22} className="color-white" />
         ) : (
-          <MoonIcon onPress={() => toggleColorScheme()} className="color-black" />
+          <Text className="text-lg font-bold color-white dark:color-black">Post</Text>
         )}
-      </DrawerContentScrollView>
-    );
-  };
+      </View>
+    </PressableScale>
+  );
+};
 
-export default DrawerContent;
+const ToggleColorSchemeButton = ({
+  colorScheme,
+  onPress,
+}: {
+  colorScheme: 'light' | 'dark' | undefined;
+  onPress: () => void;
+}) => (
+  <Pressable className="self-start p-6" onPress={onPress}>
+    {colorScheme === 'dark' ? <SunIcon color={'#fff'} /> : <MoonIcon color={'#000'} />}
+  </Pressable>
+);
 
 const DrawerItem = forwardRef(
   (
-    {
-      label,
-      Icon,
-      colorScheme,
-      href,
-    }: {
-      label: string;
-      Icon: LucideIcon;
-      href?: Href;
-      colorScheme: 'light' | 'dark' | undefined;
-    },
+    { label, Icon, colorScheme, href, isCompact, isMobile }: DrawerItemProps,
     ref: ForwardedRef<View>
   ) => {
-    const { isCompact, isMobile } = useBreakPoints();
     const [isHovered, setIsHovered] = useState(false);
-    // if (isCompact) {
-    //   return (
-    //     <PressableScale onHoverIn={() => setIsHovered(true)} onHoverOut={() => setIsHovered(false)}>
-    //       <View
-    //         className={` rounded-full  px-4 py-2 ${isHovered ? 'bg-gray-100 dark:bg-slate-900' : ''} flex-row items-center gap-4`}>
-    //         <Icon size={22} color={colorScheme === 'dark' ? 'white' : 'black'} />
-    //       </View>
-    //     </PressableScale>
-    //   );
-    // }
 
     return (
       <Link href={href as Href} asChild>
@@ -268,13 +216,10 @@ const DrawerItem = forwardRef(
           onHoverIn={() => setIsHovered(true)}
           onHoverOut={() => setIsHovered(false)}>
           <View
-            style={
-              {
-                // flexDirection: 'row',
-              }
-            }
-            className={` rounded-full  px-4 py-2 ${isHovered ? 'bg-gray-100 dark:bg-slate-900' : ''} flex-row  items-center gap-4`}>
-            <Icon size={22} color={colorScheme === 'dark' ? 'white' : 'black'} />
+            className={`rounded-full px-4 py-2 ${
+              isHovered ? 'bg-gray-100 dark:bg-slate-900' : ''
+            } flex-row items-center gap-4`}>
+            <Icon size={22} color={colorScheme === 'dark' ? '#fff' : '#000'} />
             {(!isCompact || isMobile) && (
               <Text className="line-clamp-1 select-none text-lg font-bold dark:color-white">
                 {label}
@@ -286,3 +231,6 @@ const DrawerItem = forwardRef(
     );
   }
 );
+DrawerItem.displayName = 'DrawerItem';
+
+export default DrawerContent;

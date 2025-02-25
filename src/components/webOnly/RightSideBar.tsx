@@ -8,7 +8,7 @@ import { useBreakPoints } from '~/src/hooks/useBreakPoints';
 
 import DrawerContent from '../DrawerContent';
 
-const LeftSideBar = () => {
+const RightSideBar = () => {
   const { colorScheme } = useColorScheme();
   const { isMobile, isCompact } = useBreakPoints();
   if (isMobile) return null;
@@ -16,7 +16,7 @@ const LeftSideBar = () => {
     <View
       className={`${
         isCompact ? 'w-[98px] ' : ''
-      } sticky top-0 h-screen  items-end border-r border-gray-500`}>
+      } sticky top-0 h-screen  items-end border-l border-gray-500`}>
       <View className={`sticky ${isCompact ? 'w-[98px] p-2' : 'w-[275px] p-2'} h-full`}>
         <View className={`fixed ${isCompact ? 'w-[98px] p-2' : 'w-[275px] p-2'} h-full`}>
           <View className="  pl-3 pt-3">
@@ -141,4 +141,4 @@ const LeftSideBar = () => {
   );
 };
 
-export default LeftSideBar;
+export default RightSideBar;

@@ -101,7 +101,7 @@ export const dummyPosts = Array.from({ length: 50 }, (_, i) => {
   };
 
   // Slightly modify content for uniqueness
-  post.content = post.content + ` #Post #${i + 1}`;
+  // post.content = post.content + ` #Post #${i + 1}`;
   post.likes = Math.floor(Math.random() * 2000); // Randomize likes count
   post.comments = Math.floor(Math.random() * 100); // Randomize comment count
   post.shares = Math.floor(Math.random() * 500); // Randomize share count

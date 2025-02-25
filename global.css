@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  overflow: scroll !important;
+  overflow-x: auto !important;
+  overflow-y: scroll !important;
+}

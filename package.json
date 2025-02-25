@@ -52,8 +52,11 @@
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
     "eslint": "^8.57.0",
+    "eslint-config-expo": "^8.0.1",
+    "eslint-config-prettier": "^10.0.1",
     "eslint-config-universe": "^12.0.1",
-    "prettier": "^3.2.5",
+    "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.5.1",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.0",
     "typescript": "~5.3.3"

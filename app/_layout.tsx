@@ -2,8 +2,10 @@ import '../global.css';
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Slot } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import React from 'react';
+import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export const unstable_settings = {
@@ -21,8 +23,11 @@ export default function RootLayout() {
 
 const Wrappers = ({ children }: { children: React.ReactNode }) => {
   const colorScheme = useColorScheme();
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+      <StatusBar style={'auto'} />
+
       <ThemeProvider
         value={
           colorScheme.colorScheme === 'light'
@@ -47,7 +52,7 @@ const Wrappers = ({ children }: { children: React.ReactNode }) => {
                 },
               }
         }>
-        {children}
+        <View className=" flex-1 bg-white dark:bg-black">{children}</View>
       </ThemeProvider>
     </GestureHandlerRootView>
   );

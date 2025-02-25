@@ -1,15 +1,17 @@
+import { ConstructionIcon } from 'lucide-react-native';
 import { Text, View } from 'react-native';
+
+import { interopIcon } from '~/src/helpers/interopIcon';
 
 export const EditScreenInfo = ({ path }: { path: string }) => {
   const title = 'Open up the code for this screen:';
-  const description =
-    'Change any of the text, save the file, and your app will automatically update.';
-
+  const description = 'If you want to continue of this project please write comment on twitter.';
+  interopIcon(ConstructionIcon);
   return (
     <View>
       <View className={styles.getStartedContainer}>
         <Text className={styles.getStartedText}>{title}</Text>
-        <View className={styles.codeHighlightContainer + styles.homeScreenFilename}>
+        <View className={`rounded-md bg-gray-200 px-2 py-1 dark:bg-gray-700`}>
           <Text className="dark:text-white">{path}</Text>
         </View>
         <Text className={styles.getStartedText}>{description}</Text>
@@ -19,9 +21,9 @@ export const EditScreenInfo = ({ path }: { path: string }) => {
 };
 
 const styles = {
-  codeHighlightContainer: `rounded-md px-1`,
   getStartedContainer: `items-center mx-12`,
-  getStartedText: `text-lg leading-6 text-center dark:text-white`,
+  codeHighlightContainer: `bg-red-500`,
+  getStartedText: `text-lg leading-6 text-center dark:text-white mt-5`,
   helpContainer: `items-center mx-5 mt-4`,
   helpLink: `py-4`,
   helpLinkText: `text-center`,

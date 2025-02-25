@@ -60,16 +60,37 @@ const Post: React.FC<PostProps> = ({ post, hasShownTopLine }) => {
       className="hover:bg-gray-50 dark:hover:bg-gray-950">
       <TouchableOpacity
         className={` group ${!hasShownTopLine ? 'border-t border-gray-300 dark:border-gray-700' : ''}  pb-2 pl-4 pr-4 pt-4`}>
-        <View className="flex-row items-start">
+        <View className="flex-row items-start gap-2">
           <Link href={`/${post.user.userName}`}>
-            <Image source={{ uri: post.user.avatar }} className="mr-3 h-12 w-12 rounded-full" />
+            <View>
+              <Image source={{ uri: post.user.avatar }} className="h-12  w-12 rounded-full " />
+            </View>
           </Link>
           <View className="flex-1">
             <View className="flex-row items-center justify-between">
               <View className="flex-1 flex-row items-center space-x-1">
-                <Link href={`/${post.user.userName}`} className="line-clamp-1 flex-1  flex-row">
-                  <View className="line-clamp-1 flex flex-row items-center ">
-                    <Text className="font-semibold text-gray-900 dark:text-white">
+                <Link
+                  href={`/${post.user.userName}`}
+                  className="line-clamp-1 flex flex-row items-center  ">
+                  <Text
+                    className=" line-clamp-1  font-semibold text-gray-900 dark:text-white"
+                    numberOfLines={1}>
+                    {post.user.realName}
+                  </Text>
+                  <Text
+                    className="ml-2 line-clamp-1  flex-shrink text-gray-500 dark:text-gray-400"
+                    numberOfLines={1}>
+                    @{post.user.userName}
+                  </Text>
+                  <Text
+                    className="ml-1 line-clamp-1 text-sm  text-gray-500 dark:text-gray-400"
+                    numberOfLines={1}>
+                    · {formatDistanceToNow(new Date(post.createdAt))} ago
+                  </Text>
+                  {/* <View className="line-clamp-1 flex flex-1 flex-row items-center ">
+                    <Text
+                      className=" line-clamp-1  font-semibold text-gray-900 dark:text-white"
+                      numberOfLines={1}>
                       {post.user.realName}
                     </Text>
                     <Text
@@ -77,10 +98,12 @@ const Post: React.FC<PostProps> = ({ post, hasShownTopLine }) => {
                       numberOfLines={1}>
                       @{post.user.userName}
                     </Text>
-                    <Text className="ml-1 text-sm text-gray-500 dark:text-gray-400">
+                    <Text
+                      className="ml-1 line-clamp-1 text-sm  text-gray-500 dark:text-gray-400"
+                      numberOfLines={1}>
                       · {formatDistanceToNow(new Date(post.createdAt))} ago
                     </Text>
-                  </View>
+                  </View> */}
                 </Link>
               </View>
             </View>
