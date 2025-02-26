@@ -1,4 +1,4 @@
-Run it with `npx expo prebuild` and `npx expo start`
+Run it with `npx expo prebuild`, `npx expo run ios` | `npx expo run android`
 Contacts: 
 https://sevketaydogdu.vercel.app/
 
